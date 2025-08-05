@@ -1,1 +1,1 @@
-export * from "./form-data-to-object";
+export * from './form-data-to-object';
