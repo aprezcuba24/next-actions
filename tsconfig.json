@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2017",                 // El JS de salida compatible con Node y navegadores modernos
-    "module": "CommonJS",               // Común para npm (o "ESNext" si exportas como módulos ES)
-    "declaration": true,                // Genera archivos .d.ts (declaraciones de tipos)
-    "outDir": "dist",                   // Carpeta de salida
-    "rootDir": "src",                   // Carpeta de entrada
-    "strict": true,                     // Activa todas las comprobaciones estrictas
-    "esModuleInterop": true,           // Permite importar módulos CommonJS como si fueran ESModules
+    "target": "ES2017", // El JS de salida compatible con Node y navegadores modernos
+    "module": "CommonJS", // Común para npm (o "ESNext" si exportas como módulos ES)
+    "declaration": true, // Genera archivos .d.ts (declaraciones de tipos)
+    "outDir": "dist", // Carpeta de salida
+    "rootDir": "src", // Carpeta de entrada
+    "strict": true, // Activa todas las comprobaciones estrictas
+    "esModuleInterop": true, // Permite importar módulos CommonJS como si fueran ESModules
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "sourceMap": false                  // Opcional: activa si quieres mapas de código fuente
+    "sourceMap": false // Opcional: activa si quieres mapas de código fuente
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "test"]
