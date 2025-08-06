@@ -5,6 +5,12 @@
     "declaration": true, // Genera archivos .d.ts (declaraciones de tipos)
     "outDir": "dist", // Carpeta de salida
     "rootDir": "src", // Carpeta de entrada
+    "baseUrl": ".", // Base para los paths absolutos
+    "paths": {
+      "@/*": ["src/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/test/*": ["test/*"]
+    },
     "strict": true, // Activa todas las comprobaciones estrictas
     "esModuleInterop": true, // Permite importar módulos CommonJS como si fueran ESModules
     "forceConsistentCasingInFileNames": true,
