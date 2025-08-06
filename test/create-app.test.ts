@@ -1,6 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createApp } from '@/create-app';
 import { z } from 'zod';
+import { headers } from '@/middleware';
+
+vi.mock("next/headers", () => ({
+  headers: () => new Promise((resolve) => resolve({
+    get: (key: string) => key,
+  })),
+}));
 
 describe('createApp', () => {
   it('should create an app', () => {
@@ -26,4 +33,12 @@ describe('createApp', () => {
     const result = await action({ name: 'hello' });
     expect(result).toBe('hello world');
   });
+
+  it('Headers', async () => {
+    const app = createApp();
+    app.use(headers);
+    const action = app(async ({ headers }) => headers.get('x-header'));
+    const result = await action();
+    expect(result).toBe('x-header');
+  })
 });

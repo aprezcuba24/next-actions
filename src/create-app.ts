@@ -16,8 +16,9 @@ const validateAndCleanInput = <Input>(input: unknown, config: ActionConfig<Input
   return config.input ? config.input.parse(input) : (input as Input);
 };
 
-export type Middleware<T extends Context> = (ctx: T, next: Middleware<T>) => Promise<any>;
+export type Middleware<T extends Context> = (ctx: T, next: NextFunction<T>) => Promise<any>;
 export type Action<T extends Context> = (ctx: T) => Promise<any>;
+export type NextFunction<T extends Context> = (ctx: T) => Promise<any>;
 
 const middlewareRunner = <T extends Context>(
   ctx: T,
@@ -25,7 +26,7 @@ const middlewareRunner = <T extends Context>(
   middleware: Middleware<T>[],
   currentIndex: number
 ) => {
-  const next = (ctx: T) =>
+  const next: NextFunction<T> = (ctx: T) =>
     middlewareRunner(ctx, middleware[currentIndex + 1]!, middleware, currentIndex + 1);
   return currentMiddleware(ctx, next);
 };
