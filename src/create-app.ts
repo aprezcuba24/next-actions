@@ -1,62 +1,45 @@
-import { z } from 'zod';
-import { formDataToObject } from '@/utils';
-
 export type Context<Input = any> = {
   input: Input;
 };
 
-export type ActionConfig<Input = any> = {
-  input?: z.Schema<Input>;
-};
-
-const validateAndCleanInput = <Input>(input: unknown, config: ActionConfig<Input>): Input => {
-  if (input instanceof FormData) {
-    input = formDataToObject(input) as Input;
-  }
-  return config.input ? config.input.parse(input) : (input as Input);
-};
-
-export type Middleware<T extends Context> = (ctx: T, next: NextFunction<T>) => Promise<any>;
+export type Middleware<T extends Context, C = any> = (
+  ctx: T,
+  next: NextFunction<T>,
+  config: C
+) => Promise<any>;
 export type Action<T extends Context> = (ctx: T) => Promise<any>;
 export type NextFunction<T extends Context> = (ctx: T) => Promise<any>;
 
-const middlewareRunner = <T extends Context>(
+const middlewareRunner = <T extends Context, C = any>(
   ctx: T,
-  currentMiddleware: Middleware<T>,
-  middleware: Middleware<T>[],
+  config: C,
+  currentMiddleware: Middleware<T, C>,
+  middleware: Middleware<T, C>[],
   currentIndex: number
 ) => {
   const next: NextFunction<T> = (ctx: T) =>
-    middlewareRunner(ctx, middleware[currentIndex + 1]!, middleware, currentIndex + 1);
-  return currentMiddleware(ctx, next);
+    middlewareRunner(ctx, config, middleware[currentIndex + 1]!, middleware, currentIndex + 1);
+  return currentMiddleware(ctx, next, config);
 };
 
-type WrapperFunction<T extends Context> = {
-  (
-    config: ActionConfig<any> | Action<T>,
-    handler?: Action<T>
-  ): (input?: unknown) => Promise<unknown>;
-  _middleware: Middleware<T>[];
-  use: (...middleware: Middleware<T>[]) => void;
-};
-
-export function createApp<T extends Context>() {
+export function createApp<T extends Context, C = any>() {
   const middleware: Middleware<T>[] = [];
 
-  const wrapper: WrapperFunction<T> = function (config: any, handler?: Action<T>) {
+  function wrapper(handler: Action<T>): (input?: unknown) => Promise<unknown>;
+  function wrapper(config: C, handler: Action<T>): (input?: unknown) => Promise<unknown>;
+  function wrapper(config: C | Action<T>, handler?: Action<T>) {
     if (typeof config === 'function') {
-      handler = config;
-      config = {};
+      handler = config as Action<T>;
+      config = {} as C;
     }
     return (rawInput?: unknown) => {
-      const input = validateAndCleanInput(rawInput, config);
       const ctx = {
-        input,
+        input: rawInput,
       } as T;
       const middleware = [...wrapper._middleware, (ctx: T) => (handler as Action<T>)(ctx)];
-      return middlewareRunner(ctx, middleware[0]!, middleware, 0);
+      return middlewareRunner(ctx, config, middleware[0]!, middleware, 0);
     };
-  } as WrapperFunction<T>;
+  }
 
   wrapper._middleware = middleware;
   wrapper.use = function (...middleware: Middleware<T>[]) {

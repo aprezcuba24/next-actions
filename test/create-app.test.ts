@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createApp } from '@/create-app';
-import { z } from 'zod';
-import { HeaderContext, headers } from '@/middleware';
+import { z, ZodType } from 'zod';
+import { HeaderContext, headers, validate } from '@/middleware';
 
 vi.mock('next/headers', () => ({
   headers: () =>
@@ -19,20 +19,23 @@ describe('createApp', () => {
   });
 
   it('should create an app with middleware', async () => {
-    const app = createApp();
+    const app = createApp<{ input: string }>();
     app.use((ctx, next) => {
       ctx.input = 'hello';
       return next(ctx);
     });
-    const action = app(async ({ input }) => input + ' world');
-    const result = await action();
+    const action = app(async ctx => {
+      return ctx.input + ' world';
+    });
+    const result = await action('test');
     expect(result).toBe('hello world');
   });
 
   it('should create an app with middleware and input validation', async () => {
-    const app = createApp();
+    const app = createApp<{ input: { name: string } }, { schema: ZodType }>();
+    app.use(validate);
     const schema = z.object({ name: z.string() });
-    const action = app({ input: schema }, async ({ input: { name } }) => name + ' world');
+    const action = app({ schema }, async ({ input: { name } }) => name + ' world');
     const result = await action({ name: 'hello' });
     expect(result).toBe('hello world');
   });
