@@ -19,5 +19,5 @@
     "sourceMap": false // Opcional: activa si quieres mapas de código fuente
   },
   "include": ["src", "test"],
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dist"]
 }

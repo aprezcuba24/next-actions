@@ -1,5 +1,5 @@
 import { headers as NextHeaders } from 'next/headers';
-import { Context, NextFunction } from './create-app';
+import { Context, NextFunction } from '@/create-app';
 
 export type HeaderContext = {
   headers: Awaited<ReturnType<typeof NextHeaders>>;
