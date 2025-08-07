@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createApp } from '@/create-app';
-import { z, ZodType } from 'zod';
-import { HeaderContext, headers, validate } from '@/middleware';
+import { z, ZodError } from 'zod';
+import { HeaderContext, headers, validate, ValidateConfig } from '@/middleware';
 
 vi.mock('next/headers', () => ({
   headers: () =>
@@ -32,12 +32,25 @@ describe('createApp', () => {
   });
 
   it('should create an app with middleware and input validation', async () => {
-    const app = createApp<{ input: { name: string } }, { schema: ZodType }>();
-    app.use(validate);
     const schema = z.object({ name: z.string() });
+    const app = createApp<{ input: z.infer<typeof schema> }, ValidateConfig<typeof schema>>();
+    app.use(validate);
     const action = app({ schema }, async ({ input: { name } }) => name + ' world');
     const result = await action({ name: 'hello' });
     expect(result).toBe('hello world');
+  });
+
+  it('failed validation', async () => {
+    const schema = z.object({ name: z.string() });
+    const app = createApp<{ input: z.infer<typeof schema> }, ValidateConfig<typeof schema>>();
+    app.use(validate);
+    const action = app({ schema }, async ({ input: { name } }) => name + ' world');
+    try {
+      await action({ name: 5 });
+      expect(false).toBe(true);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ZodError);
+    }
   });
 
   it('Headers', async () => {
@@ -46,5 +59,34 @@ describe('createApp', () => {
     const action = app(async ({ headers }) => headers.get('x-header'));
     const result = await action();
     expect(result).toBe('x-header');
+  });
+
+  it('Middleware order', async () => {
+    const app = createApp<{ input: string }>();
+    app.use((ctx, next) => {
+      ctx.input = 'hello';
+      return next(ctx);
+    });
+    app.use((ctx, next) => {
+      ctx.input += ' world';
+      return next(ctx);
+    });
+    const action = app(async ctx => {
+      return ctx.input + ' test';
+    });
+    const result = await action('test');
+    expect(result).toBe('hello world test');
+  });
+
+  it('FormData', async () => {
+    const formData = new FormData();
+    formData.append('name', 'John');
+    formData.append('lastName', 'Doe');
+    const schema = z.object({ name: z.string(), lastName: z.string() });
+    const app = createApp<{ input: z.infer<typeof schema> }, ValidateConfig<typeof schema>>();
+    app.use(validate);
+    const action = app({ schema }, async ({ input: { name, lastName } }) => name + ' ' + lastName);
+    const result = await action(formData);
+    expect(result).toBe('John Doe');
   });
 });

@@ -15,14 +15,14 @@ export const headers = async (ctx: Context, next: NextFunction<HeaderContext>) =
   });
 };
 
-export type ValidateConfig = {
-  schema?: z.Schema<any>;
+export type ValidateConfig<S extends z.ZodType<any>> = {
+  schema: S;
 };
 
 export const validate = async (
   ctx: Context,
   next: NextFunction<Context>,
-  config: ValidateConfig
+  config: ValidateConfig<any>
 ) => {
   if (ctx.input instanceof FormData) {
     ctx.input = formDataToObject(ctx.input) as any;
