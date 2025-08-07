@@ -6,7 +6,7 @@ export type Middleware<T extends Context, C = any> = (
   ctx: T,
   next: NextFunction<T>,
   config: C
-) => Promise<any>;
+) => Promise<any> | any;
 export type Action<T extends Context> = (ctx: T) => Promise<any>;
 export type NextFunction<T extends Context> = (ctx: T) => Promise<any>;
 

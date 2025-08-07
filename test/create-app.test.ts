@@ -89,4 +89,28 @@ describe('createApp', () => {
     const result = await action(formData);
     expect(result).toBe('John Doe');
   });
+
+  it('Abort process', async () => {
+    const app = createApp<{ input: number }>();
+    app.use((ctx, next) => {
+      return ctx.input < 0 ? 'stop' : next(ctx);
+    });
+    const action = app(async ctx => {
+      return 'continue';
+    });
+    expect(await action(-1)).toBe('stop');
+    expect(await action(1)).toBe('continue');
+  });
+
+  it('Process after', async () => {
+    const app = createApp();
+    app.use(async (ctx, next) => {
+      const result = await next(ctx);
+      return result + ' after';
+    });
+    const action = app(async () => {
+      return 'action';
+    });
+    expect(await action()).toBe('action after');
+  });
 });
