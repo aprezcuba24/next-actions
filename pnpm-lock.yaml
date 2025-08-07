@@ -22,7 +22,7 @@ importers:
         version: 4.7.0(vite@5.4.19(@types/node@24.2.0))
       '@vitest/coverage-v8':
         specifier: ^1.6.1
-        version: 1.6.1(vitest@1.6.1)
+        version: 1.6.1(vitest@1.6.1(@types/node@24.2.0)(@vitest/ui@1.6.1)(jsdom@26.1.0))
       '@vitest/ui':
         specifier: ^1.6.1
         version: 1.6.1(vitest@1.6.1)
@@ -90,6 +90,9 @@ importers:
       next:
         specifier: ^15.4.2
         version: 15.4.6(@babel/core@7.28.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      next-actions:
+        specifier: workspace:*
+        version: link:../../packages/next-actions
       react:
         specifier: ^19.1.0
         version: 19.1.1
@@ -115,9 +118,6 @@ importers:
       eslint:
         specifier: ^9.31.0
         version: 9.32.0
-      next-actions:
-        specifier: workspace:*
-        version: link:../../packages/next-actions
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -167,20 +167,26 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
-        specifier: ^24.2.0
-        version: 24.2.0
-      jsdom:
-        specifier: ^26.1.0
-        version: 26.1.0
+        specifier: ^20.0.0
+        version: 20.19.9
+      '@types/react':
+        specifier: ^18.0.0
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.0.0
+        version: 18.3.7(@types/react@18.3.23)
       next:
         specifier: ^15.4.5
         version: 15.4.6(@babel/core@7.28.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      tsconfig-paths:
-        specifier: ^4.2.0
-        version: 4.2.0
+      react:
+        specifier: ^19.1.0
+        version: 19.1.1
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.1(react@19.1.1)
       typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+        specifier: ^5.0.0
+        version: 5.8.3
       zod:
         specifier: ^4.0.15
         version: 4.0.15
@@ -918,16 +924,30 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
+  '@types/node@20.19.9':
+    resolution: {integrity: sha512-cuVNgarYWZqxRJDQHEB58GEONhOK79QVR/qYx4S7kcUObQvUwvFnYxJuuHUKm2aieN9X3yZB4LZsuYNU1Qphsw==}
+
   '@types/node@22.17.0':
     resolution: {integrity: sha512-bbAKTCqX5aNVryi7qXVMi+OkB3w/OyblodicMbvE38blyAz7GxXf6XYhklokijuPwwVg9sDLKRxt0ZHXQwZVfQ==}
 
   '@types/node@24.2.0':
     resolution: {integrity: sha512-3xyG3pMCq3oYCNg7/ZP+E1ooTaGB4cG8JWRsqqOYQdbWNY4zbaV0Ennrd7stjiJEFZCaybcIgpTjJWHRfBSIDw==}
 
+  '@types/prop-types@15.7.15':
+    resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
+
+  '@types/react-dom@18.3.7':
+    resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
+    peerDependencies:
+      '@types/react': ^18.0.0
+
   '@types/react-dom@19.1.1':
     resolution: {integrity: sha512-jFf/woGTVTjUJsl2O7hcopJ1r0upqoq/vIOoCj0yLh3RIXxWcljlpuZ+vEBRXsymD1jhfeJrlyTy/S1UW+4y1w==}
     peerDependencies:
       '@types/react': ^19.0.0
+
+  '@types/react@18.3.23':
+    resolution: {integrity: sha512-/LDXMQh55EzZQ0uVAZmKKhfENivEvWz6E+EYzh+/MCjMhNsotd+ZHhBGIjFDTi6+fz0OhQQQLbTgdQIxxCsC0w==}
 
   '@types/react@19.1.0':
     resolution: {integrity: sha512-UaicktuQI+9UKyA4njtDOGBD/67t8YEBt2xdfqu8+gP9hqPUPsiXlNPcpS2gVdjmis5GKPG3fCxbQLVgxsQZ8w==}
@@ -1856,9 +1876,6 @@ packages:
     resolution: {integrity: sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  minimist@1.2.8:
-    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
-
   mlly@1.7.4:
     resolution: {integrity: sha512-qmdSIPC4bDJXgZTCR7XosJiNKySV7O215tsPtDN9iEO/7q/76b/ijtgRu/+epFXSJhijtTCCGp3DWS549P3xKw==}
 
@@ -2222,10 +2239,6 @@ packages:
     resolution: {integrity: sha512-UXSH262CSZY1tfu3G3Secr6uGLCFVPMhIqHjlgCUtCCcgihYc/xKs9djMTMUOb2j1mVSeU8EU6NWc/iQKU6Gfg==}
     engines: {node: '>= 0.4'}
 
-  strip-bom@3.0.0:
-    resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
-    engines: {node: '>=4'}
-
   strip-final-newline@3.0.0:
     resolution: {integrity: sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==}
     engines: {node: '>=12'}
@@ -2318,10 +2331,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  tsconfig-paths@4.2.0:
-    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
-    engines: {node: '>=6'}
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
@@ -2599,6 +2608,7 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
+    optional: true
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -2716,12 +2726,14 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@csstools/color-helpers@5.0.2': {}
+  '@csstools/color-helpers@5.0.2':
+    optional: true
 
   '@csstools/css-calc@2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
   '@csstools/css-color-parser@3.0.10(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
@@ -2729,12 +2741,15 @@ snapshots:
       '@csstools/css-calc': 2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
   '@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4)':
     dependencies:
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
-  '@csstools/css-tokenizer@3.0.4': {}
+  '@csstools/css-tokenizer@3.0.4':
+    optional: true
 
   '@emnapi/runtime@1.4.5':
     dependencies:
@@ -3147,6 +3162,10 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
+  '@types/node@20.19.9':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@22.17.0':
     dependencies:
       undici-types: 6.21.0
@@ -3154,10 +3173,22 @@ snapshots:
   '@types/node@24.2.0':
     dependencies:
       undici-types: 7.10.0
+    optional: true
+
+  '@types/prop-types@15.7.15': {}
+
+  '@types/react-dom@18.3.7(@types/react@18.3.23)':
+    dependencies:
+      '@types/react': 18.3.23
 
   '@types/react-dom@19.1.1(@types/react@19.1.0)':
     dependencies:
       '@types/react': 19.1.0
+
+  '@types/react@18.3.23':
+    dependencies:
+      '@types/prop-types': 15.7.15
+      csstype: 3.1.3
 
   '@types/react@19.1.0':
     dependencies:
@@ -3268,7 +3299,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.1(vitest@1.6.1)':
+  '@vitest/coverage-v8@1.6.1(vitest@1.6.1(@types/node@24.2.0)(@vitest/ui@1.6.1)(jsdom@26.1.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -3337,7 +3368,8 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  agent-base@7.1.4: {}
+  agent-base@7.1.4:
+    optional: true
 
   ajv@6.12.6:
     dependencies:
@@ -3529,6 +3561,7 @@ snapshots:
     dependencies:
       '@asamuzakjp/css-color': 3.2.0
       rrweb-cssom: 0.8.0
+    optional: true
 
   csstype@3.1.3: {}
 
@@ -3536,6 +3569,7 @@ snapshots:
     dependencies:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
+    optional: true
 
   data-view-buffer@1.0.2:
     dependencies:
@@ -3559,7 +3593,8 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  decimal.js@10.6.0: {}
+  decimal.js@10.6.0:
+    optional: true
 
   deep-eql@4.1.4:
     dependencies:
@@ -3604,7 +3639,8 @@ snapshots:
 
   electron-to-chromium@1.5.198: {}
 
-  entities@6.0.1: {}
+  entities@6.0.1:
+    optional: true
 
   es-abstract@1.24.0:
     dependencies:
@@ -4015,6 +4051,7 @@ snapshots:
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
+    optional: true
 
   html-escaper@2.0.2: {}
 
@@ -4024,6 +4061,7 @@ snapshots:
       debug: 4.4.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   https-proxy-agent@7.0.6:
     dependencies:
@@ -4031,12 +4069,14 @@ snapshots:
       debug: 4.4.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   human-signals@5.0.0: {}
 
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+    optional: true
 
   ignore@5.3.2: {}
 
@@ -4135,7 +4175,8 @@ snapshots:
 
   is-number@7.0.0: {}
 
-  is-potential-custom-element-name@1.0.1: {}
+  is-potential-custom-element-name@1.0.1:
+    optional: true
 
   is-regex@1.2.1:
     dependencies:
@@ -4246,6 +4287,7 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+    optional: true
 
   jsesc@3.1.0: {}
 
@@ -4294,7 +4336,8 @@ snapshots:
     dependencies:
       get-func-name: 2.0.2
 
-  lru-cache@10.4.3: {}
+  lru-cache@10.4.3:
+    optional: true
 
   lru-cache@5.1.1:
     dependencies:
@@ -4338,8 +4381,6 @@ snapshots:
   minimatch@9.0.5:
     dependencies:
       brace-expansion: 2.0.2
-
-  minimist@1.2.8: {}
 
   mlly@1.7.4:
     dependencies:
@@ -4385,7 +4426,8 @@ snapshots:
     dependencies:
       path-key: 4.0.0
 
-  nwsapi@2.2.21: {}
+  nwsapi@2.2.21:
+    optional: true
 
   object-assign@4.1.1: {}
 
@@ -4465,6 +4507,7 @@ snapshots:
   parse5@7.3.0:
     dependencies:
       entities: 6.0.1
+    optional: true
 
   path-exists@4.0.0: {}
 
@@ -4608,7 +4651,8 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.46.2
       fsevents: 2.3.3
 
-  rrweb-cssom@0.8.0: {}
+  rrweb-cssom@0.8.0:
+    optional: true
 
   run-parallel@1.2.0:
     dependencies:
@@ -4633,11 +4677,13 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.2.1
 
-  safer-buffer@2.1.2: {}
+  safer-buffer@2.1.2:
+    optional: true
 
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
+    optional: true
 
   scheduler@0.26.0: {}
 
@@ -4801,8 +4847,6 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
-  strip-bom@3.0.0: {}
-
   strip-final-newline@3.0.0: {}
 
   strip-indent@3.0.0:
@@ -4828,7 +4872,8 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  symbol-tree@3.2.4: {}
+  symbol-tree@3.2.4:
+    optional: true
 
   test-exclude@6.0.0:
     dependencies:
@@ -4842,11 +4887,13 @@ snapshots:
 
   tinyspy@2.2.1: {}
 
-  tldts-core@6.1.86: {}
+  tldts-core@6.1.86:
+    optional: true
 
   tldts@6.1.86:
     dependencies:
       tldts-core: 6.1.86
+    optional: true
 
   to-regex-range@5.0.1:
     dependencies:
@@ -4857,10 +4904,12 @@ snapshots:
   tough-cookie@5.1.2:
     dependencies:
       tldts: 6.1.86
+    optional: true
 
   tr46@5.1.1:
     dependencies:
       punycode: 2.3.1
+    optional: true
 
   ts-api-utils@2.1.0(typescript@5.9.2):
     dependencies:
@@ -4869,12 +4918,6 @@ snapshots:
   tsconfck@3.1.6(typescript@5.8.3):
     optionalDependencies:
       typescript: 5.8.3
-
-  tsconfig-paths@4.2.0:
-    dependencies:
-      json5: 2.2.3
-      minimist: 1.2.8
-      strip-bom: 3.0.0
 
   tslib@2.8.1: {}
 
@@ -4972,7 +5015,8 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici-types@7.10.0: {}
+  undici-types@7.10.0:
+    optional: true
 
   update-browserslist-db@1.1.3(browserslist@4.25.1):
     dependencies:
@@ -5061,19 +5105,24 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
+    optional: true
 
-  webidl-conversions@7.0.0: {}
+  webidl-conversions@7.0.0:
+    optional: true
 
   whatwg-encoding@3.1.1:
     dependencies:
       iconv-lite: 0.6.3
+    optional: true
 
-  whatwg-mimetype@4.0.0: {}
+  whatwg-mimetype@4.0.0:
+    optional: true
 
   whatwg-url@14.2.0:
     dependencies:
       tr46: 5.1.1
       webidl-conversions: 7.0.0
+    optional: true
 
   which-boxed-primitive@1.1.1:
     dependencies:
@@ -5129,11 +5178,14 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.18.3: {}
+  ws@8.18.3:
+    optional: true
 
-  xml-name-validator@5.0.0: {}
+  xml-name-validator@5.0.0:
+    optional: true
 
-  xmlchars@2.2.0: {}
+  xmlchars@2.2.0:
+    optional: true
 
   yallist@3.1.1: {}
 

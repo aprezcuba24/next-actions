@@ -1,2 +1,2 @@
-export * from "./create-app.js";
-export * from "./middleware.js";
+export * from "./create-app";
+export * from "./middleware";

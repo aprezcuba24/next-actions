@@ -2,16 +2,15 @@
   "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "./src",
     "baseUrl": ".",
-    "moduleResolution": "node",
     "module": "ESNext",
-    "target": "ES2022",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "sourceMap": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/utils/*": ["./src/utils/*"],
       "@/test/*": ["./test/*"]
     }
   },

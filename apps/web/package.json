@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "next-actions": "workspace:*",
     "next": "^15.4.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
@@ -19,7 +20,6 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "next-actions": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",

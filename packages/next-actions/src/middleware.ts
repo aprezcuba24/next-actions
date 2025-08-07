@@ -1,7 +1,7 @@
 import { headers as NextHeaders } from "next/headers";
-import { Context, NextFunction } from "./create-app.js";
+import { Context, NextFunction } from "./create-app";
 import { z } from "zod";
-import { formDataToObject } from "./utils/index.js";
+import { formDataToObject } from "./utils";
 
 export type HeaderContext = {
   headers: Awaited<ReturnType<typeof NextHeaders>>;

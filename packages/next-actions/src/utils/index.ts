@@ -1,1 +1,1 @@
-export * from "./form-data-to-object.js";
+export * from "./form-data-to-object";
