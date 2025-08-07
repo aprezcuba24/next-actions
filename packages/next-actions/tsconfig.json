@@ -3,6 +3,12 @@
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": ["./src/*"],
       "@/utils/*": ["./src/utils/*"],
