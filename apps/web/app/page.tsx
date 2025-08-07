@@ -1,7 +1,7 @@
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
-import { helloAction } from "../actions";
+import { helloAction, simpleAction, validateObjectOption } from "../actions";
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -20,8 +20,9 @@ const ThemeImage = (props: Props) => {
 };
 
 export default async function Home() {
-  const greeting = await helloAction("John");
-  console.log(greeting);
+  console.log(await helloAction("John"));
+  console.log(await simpleAction());
+  console.log(await validateObjectOption({ name: "John" }));
   return (
     <div className={styles.page}>
       <main className={styles.main}>
