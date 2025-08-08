@@ -7,9 +7,9 @@ export type HeaderContext = {
   headers: Awaited<ReturnType<typeof NextHeaders>>;
 } & Context;
 
-export const headers = async (
-  ctx: Context,
-  next: NextFunction<HeaderContext>,
+export const headers = async <C extends Context>(
+  ctx: C,
+  next: NextFunction<C>,
 ) => {
   const _headers = await NextHeaders();
   return next({
@@ -19,7 +19,7 @@ export const headers = async (
 };
 
 export type ValidateConfig<S extends z.ZodType<any>> = {
-  schema: S;
+  schema?: S;
 };
 
 export const validate = async <C extends Context>(

@@ -21,3 +21,8 @@ export const validateObjectOption = app(
     return `Name: ${input.name}`;
   },
 );
+
+export const doWithUserAction = app(
+  { roles: ["ADMIN", "USER"] },
+  async ({ user }) => user,
+);
