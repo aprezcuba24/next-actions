@@ -1,31 +1,23 @@
 {
   "name": "next-actions",
   "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
+  "description": "Next.js server actions utilities",
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -b",
+    "dev": "tsc --watch"
   },
-  "files": [
-    "dist"
-  ],
-  "keywords": [],
+  "keywords": ["next", "server-actions", "typescript"],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
   "peerDependencies": {
     "next": "^15.4.5",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "zod": "^4.0.15"
+    "react-dom": "^19.1.0"
   },
   "peerDependenciesMeta": {
     "next": {

@@ -14,6 +14,11 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "paths": {
+      "@repo/config/*": ["packages/config/*"],
+      "@repo/ui/*": ["packages/ui/src/*"],
+      "next-actions/*": ["packages/next-actions/src/*"],
+    }
   }
 }

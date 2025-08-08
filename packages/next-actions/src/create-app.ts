@@ -5,7 +5,7 @@ export type Context<Input = any> = {
 export type Middleware<T extends Context, C = any> = (
   ctx: T,
   next: NextFunction<T>,
-  config: C,
+  config?: C,
 ) => Promise<any> | any;
 export type Action<T extends Context> = (ctx: T) => Promise<any>;
 export type NextFunction<T extends Context> = (ctx: T) => Promise<any>;
@@ -54,7 +54,7 @@ export function createApp<T extends Context, C = any>() {
   }
 
   wrapper._middleware = middleware;
-  wrapper.use = function (...middleware: Middleware<T>[]) {
+  wrapper.use = function (...middleware: Middleware<T, C>[]) {
     this._middleware.push(...middleware);
   };
 
