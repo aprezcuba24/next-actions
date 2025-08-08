@@ -9,7 +9,6 @@ import {
 export type AppConfig = ValidateConfig<any>;
 export type AppContext = HeaderContext;
 
-// const app = createApp();
 const app = createApp<AppContext, AppConfig>();
 app.use(headers);
 app.use(validate);

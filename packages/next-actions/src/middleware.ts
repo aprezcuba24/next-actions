@@ -22,19 +22,19 @@ export type ValidateConfig<S extends z.ZodType<any>> = {
   schema: S;
 };
 
-export const validate = async (
-  ctx: Context,
-  next: NextFunction<Context>,
-  // config: ValidateConfig<any>,
+export const validate = async <C extends Context>(
+  ctx: C,
+  next: NextFunction<C>,
+  config?: ValidateConfig<any>,
 ) => {
   if (ctx.input instanceof FormData) {
     ctx.input = formDataToObject(ctx.input) as any;
   }
-  // const input = config.schema
-  //   ? config.schema.parse(ctx.input)
-  //   : (ctx.input as any);
+  const input = config?.schema
+    ? config.schema.parse(ctx.input)
+    : (ctx.input as any);
   return next({
     ...ctx,
-    // input,
+    input,
   });
 };
