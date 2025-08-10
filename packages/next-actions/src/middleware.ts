@@ -30,11 +30,16 @@ export const validate = async <C extends Context>(
   if (ctx.input instanceof FormData) {
     ctx.input = formDataToObject(ctx.input) as any;
   }
-  const input = config?.schema
-    ? config.schema.parse(ctx.input)
-    : (ctx.input as any);
+  const { success, data, error } = config?.schema?.safeParse(ctx.input) ?? {
+    success: true,
+    data: ctx.input,
+    error: undefined,
+  };
+  if (!success) {
+    return JSON.stringify(error.issues, null, 2);
+  }
   return next({
     ...ctx,
-    input,
+    input: data,
   });
 };

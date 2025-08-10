@@ -8,6 +8,7 @@ import {
   simpleAction,
   validateObjectOption,
 } from "../actions";
+import Form from "../components/form";
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -31,12 +32,6 @@ export default async function Home() {
   console.log(await validateObjectOption({ name: "John" }));
   console.log(await doWithUserAction());
 
-  const handleForm = async (formData: FormData) => {
-    "use server";
-    const result = await formAction(formData);
-    console.log(result);
-  };
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -50,12 +45,7 @@ export default async function Home() {
           priority
         />
 
-        <form action={handleForm}>
-          <input type="text" name="name" />
-          <input type="number" name="age" />
-          <input type="checkbox" name="isUser" />
-          <button type="submit">Submit</button>
-        </form>
+        <Form action={formAction} />
 
         <ol>
           <li>
