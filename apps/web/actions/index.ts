@@ -26,3 +26,14 @@ export const doWithUserAction = app(
   { roles: ["ADMIN", "USER"] },
   async ({ user }) => user,
 );
+
+const PersonSchema = z.object({
+  name: z.coerce.string(),
+  age: z.coerce.number(),
+  isUser: z.coerce.boolean().default(false),
+});
+
+export const formAction = app({ schema: PersonSchema }, async ({ input }) => {
+  console.log(Object.entries(input), input);
+  return input;
+});
