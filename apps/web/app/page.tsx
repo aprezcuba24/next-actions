@@ -6,6 +6,7 @@ import {
   formAction,
   helloAction,
   simpleAction,
+  typeAction,
   validateObjectOption,
 } from "../actions";
 import Form from "../components/form";
@@ -31,6 +32,8 @@ export default async function Home() {
   console.log(await simpleAction());
   console.log(await validateObjectOption({ name: "John" }));
   console.log(await doWithUserAction());
+  const result = await typeAction({ name: "John" });
+  console.log(result.name);
 
   return (
     <div className={styles.page}>

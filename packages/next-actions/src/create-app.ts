@@ -31,25 +31,40 @@ const middlewareRunner = <T extends Context, C = any>(
 export function createApp<T extends Context, C = any>() {
   const middleware: Middleware<T>[] = [];
 
-  function wrapper(handler: Action<T>): (input?: unknown) => Promise<unknown>;
-  function wrapper(
+  function wrapper<I extends any, R = any>(
+    handler: Action<Omit<T, "input"> & { input: I }>,
+  ): (input?: I) => R;
+  function wrapper<I extends any, R = any>(
     config: C,
-    handler: Action<T>,
-  ): (input?: unknown) => Promise<unknown>;
-  function wrapper(config: C | Action<T>, handler?: Action<T>) {
+    handler: Action<Omit<T, "input"> & { input: I }>,
+  ): (input?: I) => R;
+  function wrapper<I extends any, R = any>(
+    config: C | Action<Omit<T, "input"> & { input: I }>,
+    handlerParameter?: Action<Omit<T, "input"> & { input: I }>,
+  ) {
+    type CurrentContext = Omit<T, "input"> & { input: I };
+    let handler: Action<CurrentContext>;
     if (typeof config === "function") {
-      handler = config as Action<T>;
+      handler = config as Action<CurrentContext>;
       config = {} as C;
+    } else {
+      handler = handlerParameter!;
     }
-    return (rawInput?: unknown) => {
+    return (rawInput?: I) => {
       const ctx = {
         input: rawInput,
-      } as T;
+      } as CurrentContext;
       const middleware = [
         ...wrapper._middleware,
-        (ctx: T) => (handler as Action<T>)(ctx),
+        (ctx: CurrentContext) => handler!(ctx),
       ];
-      return middlewareRunner(ctx, config, middleware[0]!, middleware, 0);
+      return middlewareRunner(
+        ctx,
+        config,
+        (middleware[0] as Middleware<CurrentContext, C>)!,
+        middleware as Middleware<CurrentContext, C>[],
+        0,
+      ) as R;
     };
   }
 
