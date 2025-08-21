@@ -7,7 +7,10 @@ export type Middleware<T extends Context, C = any> = (
   next: NextFunction<T>,
   config?: C,
 ) => Promise<any> | any;
-export type Action<T extends Context> = (ctx: T) => Promise<any>;
+export type Action<T extends Context, C = any> = (
+  ctx: T,
+  config?: C,
+) => Promise<any>;
 export type NextFunction<T extends Context> = (ctx: T) => Promise<any>;
 
 const middlewareRunner = <T extends Context, C = any>(
@@ -32,20 +35,20 @@ export function createApp<T extends Context, C = any>() {
   const middleware: Middleware<T>[] = [];
 
   function wrapper<I extends any, R = any>(
-    handler: Action<Omit<T, "input"> & { input: I }>,
+    handler: Action<Omit<T, "input"> & { input: I }, C>,
   ): (input?: I) => R;
   function wrapper<I extends any, R = any>(
     config: C,
-    handler: Action<Omit<T, "input"> & { input: I }>,
+    handler: Action<Omit<T, "input"> & { input: I }, C>,
   ): (input?: I) => R;
   function wrapper<I extends any, R = any>(
-    config: C | Action<Omit<T, "input"> & { input: I }>,
-    handlerParameter?: Action<Omit<T, "input"> & { input: I }>,
+    config: C | Action<Omit<T, "input"> & { input: I }, C>,
+    handlerParameter?: Action<Omit<T, "input"> & { input: I }, C>,
   ) {
     type CurrentContext = Omit<T, "input"> & { input: I };
-    let handler: Action<CurrentContext>;
+    let handler: Action<CurrentContext, C>;
     if (typeof config === "function") {
-      handler = config as Action<CurrentContext>;
+      handler = config as Action<CurrentContext, C>;
       config = {} as C;
     } else {
       handler = handlerParameter!;
@@ -56,7 +59,7 @@ export function createApp<T extends Context, C = any>() {
       } as CurrentContext;
       const middleware = [
         ...wrapper._middleware,
-        (ctx: CurrentContext) => handler!(ctx),
+        (ctx: CurrentContext) => handler!(ctx, config),
       ];
       return middlewareRunner(
         ctx,

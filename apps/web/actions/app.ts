@@ -33,9 +33,9 @@ export const user = async <C extends Context>(
 export type AppConfig = ValidateConfig<any> & UserConfig;
 export type AppContext = HeaderContext & UserContext;
 
-const app = createApp<AppContext, AppConfig>();
+export const app = createApp<AppContext, AppConfig>();
 app.use(headers);
 app.use(validate);
 app.use(user);
 
-export default app;
+export const simpleApp = createApp();

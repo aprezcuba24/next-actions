@@ -1,135 +1,178 @@
-# Turborepo starter
+# next-actions
 
-This Turborepo starter is maintained by the Turborepo core team.
+**A lightweight framework-style utility for building action-based APIs in Next.js.**
 
-## Using this example
+The core of this library revolves around the `createApp` function. It allows you to define an application instance (`app`) with optional configuration, middleware, and handlers, giving you a clean, organized, and type-safe way to manage server actions.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+## ✨ Features
+
+- 🏗 **Composable API** — Define an `app` and register actions in a structured way.
+- ⚡ **Type-Safe** — Fully compatible with TypeScript.
+- 🧩 **Middleware Support** — Add reusable logic across all actions.
+- 🛠 **Configurable** — Pass configuration objects per action or globally.
+- 🚀 **Next.js Friendly** — Ideal for Next.js server actions or any server-side function.
+
+---
+
+## 📦 Installation
+
+```bash
+npm install next-actions
+# or
+yarn add next-actions
+# or
+pnpm add next-actions
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🚀 Getting Started
 
-### Apps and Packages
+### Create Your App
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+```ts
+import { createApp } from "next-actions";
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+// Create the app instance
+const app = createApp();
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+---
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Register Actions
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+An action is defined by calling `app(config?, handler)`.  
+The `config` parameter is **optional** and can hold metadata, validation rules, or other action-specific settings.
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```ts
+const action = app({ 
+  // Configuration object
+ }, async () => {
+  // Your server action logic here
+  return { message: "Hello from server action!" };
+});
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+You can also omit `config`:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```ts
+const action = app(async () => {
+  return { data: "No config here" };
+});
 ```
 
-### Remote Caching
+---
+### The input parameter
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+The actions receive a context object that will contain a field named input with the data passed to the action.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```ts
+app({ 
+  // Configuration object
+ }, async ({ input }) => {
+  // Your server action logic here
+  return { message: `Hello ${input}` };
+});
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### Add Middleware
 
+Middleware functions allow you to inject **horizontal logic** into the application.  
+They can:
+- Modify the input parameters.
+- Stop the execution flow entirely.
+- Add shared context for all actions.
+
+```ts
+app.use(async (context, next) => {
+  console.log("Incoming params:", context.params);
+  
+  // Example: block request if missing token
+  if (!context.params.token) {
+    throw new Error("Unauthorized");
+  }
+
+  // Continue execution
+  return await next();
+});
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+---
+
+### Run Your App
+
+Once your app is set up, you can execute the registered actions with your own routing or trigger logic.
+
+```ts
+const result = await app({ some: "input" });
+console.log(result);
 ```
 
-## Useful Links
+---
 
-Learn more about the power of Turborepo:
+## 🧩 API Overview
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### `createApp()`
+Creates an `app` instance.
+
+**Returns:**  
+A callable function `app(config?, handler)` with additional methods like `.use()` for middleware registration.
+
+---
+
+### `app(config?, handler)`
+Registers an action in the app.
+
+- `config` *(optional)* — Object with action-specific configuration.
+- `handler` — The async function that contains your action logic.
+
+---
+
+### `app.use(middleware)`
+Registers a middleware function.
+
+A middleware is an async function `(context, next, config) => any` where:
+- `context` contains the incoming parameters and shared state.
+- `next` calls the next middleware or the final handler.
+- `config` is the configuration object passed to the action.
+
+---
+
+### Middleware in the package
+
+The package provides some middleware functions that you can use out of the box.
+
+`headers` that is a wrapper of `import { headers } from "next/headers";`
+
+```ts
+import { headers } from "next-actions";
+
+app.use(headers);
+```
+
+`validate` that use `zod` to validate the input parameters.
+
+```ts
+import { validate } from "next-actions";
+//...
+app.use(validate);
+
+//Now you can use it
+
+const userSchema = z.object({
+  name: z.string(),
+});
+const registerUser = app({ schema: userSchema }, async ({ input }) => {
+  return `User registered: ${input.name}`;
+});
+```
+
+---
+
+## 📄 License
+
+MIT © [Renier](https://github.com/aprezcuba24)

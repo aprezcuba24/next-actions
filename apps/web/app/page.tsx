@@ -8,6 +8,7 @@ import {
   simpleAction,
   typeAction,
   validateObjectOption,
+  withSimpleAction,
 } from "../actions";
 import Form from "../components/form";
 
@@ -30,6 +31,7 @@ const ThemeImage = (props: Props) => {
 export default async function Home() {
   console.log(await helloAction("John"));
   console.log(await simpleAction());
+  console.log(await withSimpleAction());
   console.log(await validateObjectOption({ name: "John" }));
   console.log(await doWithUserAction());
   const result = await typeAction({ name: "John" });

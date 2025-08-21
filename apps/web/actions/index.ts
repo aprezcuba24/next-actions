@@ -1,9 +1,10 @@
 "use server";
 
-import app from "./app";
+import { app, simpleApp } from "./app";
 import { z } from "zod";
 
 export const simpleAction = app(async () => "hello world");
+export const withSimpleAction = simpleApp(async () => 'Simple app');
 
 const helloSchema = z.string();
 export const helloAction = app<z.infer<typeof helloSchema>>(
