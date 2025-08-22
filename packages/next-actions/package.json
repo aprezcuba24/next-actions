@@ -1,5 +1,5 @@
 {
-  "name": "next-actions",
+  "name": "next-server-functions",
   "version": "1.0.0",
   "description": "Next.js server actions utilities",
   "main": "dist/index.js", 
@@ -9,8 +9,19 @@
     "dev": "tsc --watch"
   },
   "keywords": ["next", "server-actions", "typescript"],
-  "author": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
+  "author": {
+    "name": "aprezcuba24",
+    "url": "https://renierricardo.dev/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aprezcuba24/next-actions.git",
+    "directory": "packages/next-actions"
+  },
   "dependencies": {
     "zod": "^3.24.1"
   },

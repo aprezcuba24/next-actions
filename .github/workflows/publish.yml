@@ -1,0 +1,42 @@
+name: Publish to npm
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/next-actions/**'
+      - '.github/workflows/publish.yml'
+
+jobs:
+  build-and-publish:
+    if: ${{ github.repository_owner == 'aprezcuba24' }}
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.1.1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          version: 9.1.1
+          node-version: 20
+          cache: "pnpm"
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build package
+        run: pnpm build:cli
+
+      - name: Publish to npm
+        run: pnpm publish --access public --no-git-checks
+        working-directory: ./packages/next-actions
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

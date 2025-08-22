@@ -1,4 +1,4 @@
-# next-actions
+# next-server-functions
 
 **A lightweight framework-style utility for building action-based APIs in Next.js.**
 
@@ -19,11 +19,11 @@ The core of this library revolves around the `createApp` function. It allows you
 ## 📦 Installation
 
 ```bash
-npm install next-actions
+npm install next-server-functions
 # or
-yarn add next-actions
+yarn add next-server-functions
 # or
-pnpm add next-actions
+pnpm add next-server-functions
 ```
 
 ---
@@ -33,7 +33,7 @@ pnpm add next-actions
 ### Create Your App
 
 ```ts
-import { createApp } from "next-actions";
+import { createApp } from "next-server-functions";
 
 // Create the app instance
 const app = createApp();
@@ -149,7 +149,7 @@ The package provides some middleware functions that you can use out of the box.
 `headers` that is a wrapper of `import { headers } from "next/headers";`
 
 ```ts
-import { headers } from "next-actions";
+import { headers } from "next-server-functions";
 
 app.use(headers);
 ```
@@ -157,7 +157,7 @@ app.use(headers);
 `validate` that use `zod` to validate the input parameters.
 
 ```ts
-import { validate } from "next-actions";
+import { validate } from "next-server-functions";
 //...
 app.use(validate);
 

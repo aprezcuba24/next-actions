@@ -6,7 +6,7 @@ import {
   headers,
   Context,
   NextFunction,
-} from "next-actions";
+} from "next-server-functions";
 
 export type UserConfig = {
   roles?: string[];
