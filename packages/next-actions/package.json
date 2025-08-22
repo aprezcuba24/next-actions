@@ -1,6 +1,6 @@
 {
   "name": "next-server-functions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Next.js server actions utilities",
   "main": "dist/index.js", 
   "types": "dist/index.d.ts",
