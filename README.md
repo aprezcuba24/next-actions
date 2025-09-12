@@ -244,6 +244,55 @@ const registerUser = app({ schema: userSchema }, async ({ input }) => {
   return `User registered: ${input.name}`;
 });
 ```
+---
+
+## Pipes
+
+Pipes are one of the core features of this library.  
+They allow you to compose functions step by step, where each function receives the accumulated output of all previous ones.  
+This ensures **type safety** while keeping your code modular and easy to read.
+
+### Example
+
+```ts
+type PipeProps = {
+  name: string;
+};
+
+const pipe1 = ({ input }: AppContext<PipeProps>) => {
+  return {
+    name: `${input.name} - Pipe 1`,
+    lastName: "Doe",
+  };
+};
+
+const pipe2 = ({ input }: AppContext<PipeProps & ReturnType<typeof pipe1>>) => {
+  return {
+    name: `${input.name} ${input.lastName} - Pipe 2`,
+  };
+};
+
+const pipe3 = ({ input }: AppContext<PipeProps & ReturnType<typeof pipe1>>) => {
+  return {
+    name: `${input.name} ${input.lastName} - Pipe 3`,
+  };
+};
+
+export const pipeAction = app<PipeProps>(pipe1, pipe2, pipe3);
+
+const result = pipeAction({ name: "John" });
+console.log(result);
+// {
+//   name: "John - Pipe 1 Doe - Pipe 2 Doe - Pipe 3",
+//   lastName: "Doe"
+// }
+```
+
+### Why Pipes?
+
+- **Type-safe composition**: each pipe knows exactly what data it receives.  
+- **Extendable**: add or remove steps without breaking type contracts.  
+- **Reusable**: each pipe is a pure function that can be shared across contexts.  
 
 ---
 
