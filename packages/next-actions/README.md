@@ -173,6 +173,68 @@ const registerUser = app({ schema: userSchema }, async ({ input }) => {
 
 ---
 
+### Typescript
+
+The package is fully compatible with TypeScript. When you create an app you can pass what is the type of the config and the context.
+
+Suppose the following example.
+
+- Use the validate and the header middleware.
+- Create a custom middleware to control the security.
+
+```ts
+import {
+  createApp,
+  validate,
+  headers,
+  NextFunction,
+  Context,
+  ValidateConfig,
+  HeaderContext
+} from "next-server-functions";
+import { z } from "zod";
+
+// Create the custom middleware.
+
+// The actions can pass as config the roles that the user needs to execute it.
+export type UserConfig = {
+  roles?: string[];
+};
+// The context will have a new field whit the current user.
+export type UserContext = {
+  user: any;
+};
+
+// The middleware
+export const user = async <C extends Context>(
+  ctx: C,
+  next: NextFunction<C>,
+  config?: UserConfig,
+) => {
+  let user;
+  if (config?.roles) {
+    // the logic to validate the roles and return the user.
+  }
+  return next({ ...ctx, user });
+};
+
+// Pass the types when create the app
+export type AppConfig = ValidateConfig<any> & UserConfig;
+export type AppContext = HeaderContext & UserContext;
+const app = createApp<AppContext, AppConfig>();
+app.use(headers);
+app.use(validate);
+
+const userSchema = z.object({
+  name: z.string(),
+});
+const registerUser = app({ schema: userSchema }, async ({ input }) => {
+  return `User registered: ${input.name}`;
+});
+```
+
+---
+
 ## 📄 License
 
 MIT © [Renier](https://github.com/aprezcuba24)
