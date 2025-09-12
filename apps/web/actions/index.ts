@@ -1,10 +1,10 @@
 "use server";
 
-import { app, simpleApp } from "./app";
+import { app, AppContext, simpleApp } from "./app";
 import { z } from "zod";
 
 export const simpleAction = app(async () => "hello world");
-export const withSimpleAction = simpleApp(async () => 'Simple app');
+export const withSimpleAction = simpleApp(async () => "Simple app");
 
 const helloSchema = z.string();
 export const helloAction = app<z.infer<typeof helloSchema>>(
@@ -49,3 +49,25 @@ export const typeAction = app<{ name: string }, { name: string }>(
     };
   },
 );
+
+// Pipes
+type PipeProps = {
+  name: string;
+};
+const pipe1 = ({ input }: AppContext<PipeProps>) => {
+  return {
+    name: `${input.name} - Pipe 1`,
+    lastName: "Doe",
+  };
+};
+const pipe2 = ({ input }: AppContext<PipeProps & ReturnType<typeof pipe1>>) => {
+  return {
+    name: `${input.name} ${input.lastName} - Pipe 2`,
+  };
+};
+const pipe3 = ({ input }: AppContext<PipeProps & ReturnType<typeof pipe1>>) => {
+  return {
+    name: `${input.name} ${input.lastName} - Pipe 3`,
+  };
+};
+export const pipeAction = app<PipeProps>(pipe1, pipe2, pipe3);

@@ -47,12 +47,15 @@ An action is defined by calling `app(config?, handler)`.
 The `config` parameter is **optional** and can hold metadata, validation rules, or other action-specific settings.
 
 ```ts
-const action = app({ 
-  // Configuration object
- }, async () => {
-  // Your server action logic here
-  return { message: "Hello from server action!" };
-});
+const action = app(
+  {
+    // Configuration object
+  },
+  async () => {
+    // Your server action logic here
+    return { message: "Hello from server action!" };
+  },
+);
 ```
 
 You can also omit `config`:
@@ -64,17 +67,21 @@ const action = app(async () => {
 ```
 
 ---
+
 ### The input parameter
 
 The actions receive a context object that will contain a field named input with the data passed to the action.
 
 ```ts
-app({ 
-  // Configuration object
- }, async ({ input }) => {
-  // Your server action logic here
-  return { message: `Hello ${input}` };
-});
+app(
+  {
+    // Configuration object
+  },
+  async ({ input }) => {
+    // Your server action logic here
+    return { message: `Hello ${input}` };
+  },
+);
 ```
 
 ---
@@ -83,6 +90,7 @@ app({
 
 Middleware functions allow you to inject **horizontal logic** into the application.  
 They can:
+
 - Modify the input parameters.
 - Stop the execution flow entirely.
 - Add shared context for all actions.
@@ -90,7 +98,7 @@ They can:
 ```ts
 app.use(async (context, next) => {
   console.log("Incoming params:", context.params);
-  
+
   // Example: block request if missing token
   if (!context.params.token) {
     throw new Error("Unauthorized");
@@ -117,6 +125,7 @@ console.log(result);
 ## 🧩 API Overview
 
 ### `createApp()`
+
 Creates an `app` instance.
 
 **Returns:**  
@@ -125,17 +134,20 @@ A callable function `app(config?, handler)` with additional methods like `.use()
 ---
 
 ### `app(config?, handler)`
+
 Registers an action in the app.
 
-- `config` *(optional)* — Object with action-specific configuration.
+- `config` _(optional)_ — Object with action-specific configuration.
 - `handler` — The async function that contains your action logic.
 
 ---
 
 ### `app.use(middleware)`
+
 Registers a middleware function.
 
 A middleware is an async function `(context, next, config) => any` where:
+
 - `context` contains the incoming parameters and shared state.
 - `next` calls the next middleware or the final handler.
 - `config` is the configuration object passed to the action.
@@ -190,7 +202,7 @@ import {
   NextFunction,
   Context,
   ValidateConfig,
-  HeaderContext
+  HeaderContext,
 } from "next-server-functions";
 import { z } from "zod";
 

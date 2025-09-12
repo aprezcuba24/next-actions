@@ -5,7 +5,7 @@ import { formDataToObject } from "./utils";
 
 export type HeaderContext = {
   headers: Awaited<ReturnType<typeof NextHeaders>>;
-} & Context;
+};
 
 export const headers = async <C extends Context>(
   ctx: C,

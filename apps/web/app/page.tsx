@@ -5,6 +5,7 @@ import {
   doWithUserAction,
   formAction,
   helloAction,
+  pipeAction,
   simpleAction,
   typeAction,
   validateObjectOption,
@@ -36,6 +37,7 @@ export default async function Home() {
   console.log(await doWithUserAction());
   const result = await typeAction({ name: "John" });
   console.log(result.name);
+  console.log(await pipeAction({ name: "John" }));
 
   return (
     <div className={styles.page}>

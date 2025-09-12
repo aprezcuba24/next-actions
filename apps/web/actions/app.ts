@@ -31,7 +31,9 @@ export const user = async <C extends Context>(
 };
 
 export type AppConfig = ValidateConfig<any> & UserConfig;
-export type AppContext = HeaderContext & UserContext;
+export type AppContext<Input = any> = Context<Input> &
+  HeaderContext &
+  UserContext;
 
 export const app = createApp<AppContext, AppConfig>();
 app.use(headers);
