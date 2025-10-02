@@ -1,14 +1,18 @@
 {
   "name": "next-server-functions",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Next.js server actions utilities",
-  "main": "dist/index.js", 
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc --watch"
   },
-  "keywords": ["next", "server-actions", "typescript"],
+  "keywords": [
+    "next",
+    "server-actions",
+    "typescript"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -28,7 +32,8 @@
   "peerDependencies": {
     "next": "^15.4.5",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "hono": "^4.9.9"
   },
   "peerDependenciesMeta": {
     "next": {
@@ -47,6 +52,7 @@
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "hono": "^4.9.9",
     "next": "^15.4.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

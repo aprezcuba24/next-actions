@@ -244,6 +244,7 @@ const registerUser = app({ schema: userSchema }, async ({ input }) => {
   return `User registered: ${input.name}`;
 });
 ```
+
 ---
 
 ## Pipes
@@ -290,9 +291,9 @@ console.log(result);
 
 ### Why Pipes?
 
-- **Type-safe composition**: each pipe knows exactly what data it receives.  
-- **Extendable**: add or remove steps without breaking type contracts.  
-- **Reusable**: each pipe is a pure function that can be shared across contexts.  
+- **Type-safe composition**: each pipe knows exactly what data it receives.
+- **Extendable**: add or remove steps without breaking type contracts.
+- **Reusable**: each pipe is a pure function that can be shared across contexts.
 
 ---
 
