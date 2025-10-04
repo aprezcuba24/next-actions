@@ -297,6 +297,47 @@ console.log(result);
 
 ---
 
+## Hono api rest
+
+To crete api rest the package uses the [Hono](https://hono.dev/) framework.
+
+### Example
+
+Create the file to configure the api rest. `apps/web/app/api/[[...route]]/route.ts`
+
+Use the `HonoInput` and `apiHandle` from the package, to connect hono with next app.
+
+```ts
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
+import { app } from "folder/where/the/app/is/configured";
+import { HonoInput, apiHandle } from "next-server-functions";
+
+const action = app<HonoInput>(async ({ input: [c] }) => {
+  return c.json({
+    message: `Hello Next.js! ${c.req.param("name")}`,
+  });
+});
+
+const hono = new Hono().basePath("/api");
+
+hono.get("/hello-world/:name", apiHandle(action));
+
+const handler = handle(hono);
+
+export const GET = handler;
+export const POST = handler;
+export const OPTIONS = handler;
+export const HEAD = handler;
+export const PUT = handler;
+export const DELETE = handler;
+export const PATCH = handler;
+
+export default hono;
+```
+
+---
+
 ## 📄 License
 
 MIT © [Renier](https://github.com/aprezcuba24)

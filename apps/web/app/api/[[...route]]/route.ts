@@ -3,19 +3,12 @@ import { handle } from "hono/vercel";
 import { app } from "../../../actions/app";
 import { HonoInput, apiHandle } from "next-server-functions";
 
-const action = app<HonoInput>(
-  async ({
-    input: {
-      hono: [c],
-    },
+const action = app<HonoInput>(async ({ input: [c], user }) => {
+  return c.json({
+    message: `Hello Next.js! ${c.req.param("name")}`,
     user,
-  }) => {
-    return c.json({
-      message: `Hello Next.js! ahora si ff222 ${c.req.param("name")}`,
-      user,
-    });
-  },
-);
+  });
+});
 
 const hono = new Hono().basePath("/api");
 

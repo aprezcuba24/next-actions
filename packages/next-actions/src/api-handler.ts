@@ -1,11 +1,7 @@
 import { Context } from "hono";
 
-export type HonoInput = {
-  hono: [Context];
-};
+export type HonoInput = [Context];
 
 export const apiHandle = (action: any) => (c: Context) => {
-  return action({
-    hono: [c],
-  });
+  return action([c]);
 };
