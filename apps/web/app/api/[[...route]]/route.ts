@@ -1,18 +1,16 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { app } from "../../../actions/app";
-import { HonoInput, apiHandle } from "next-server-functions";
+import { app, AppConfig, AppContext } from "../../../actions/app";
+import { createApi } from "next-server-functions";
 
-const action = app<HonoInput>(async ({ input: [c], user }) => {
-  return c.json({
-    message: `Hello Next.js! ${c.req.param("name")}`,
-    user,
-  });
-});
+const api = createApi<AppContext, AppConfig>(app);
 
 const hono = new Hono().basePath("/api");
 
-hono.get("/hello-world/:name", apiHandle(action));
+hono.get("/echo", api({ roles: ["admin"] }), async (c) => {
+  console.log(c.get("context").user);
+  return c.text(`Echo: ${c.get("context").headers.get("token")}`);
+});
 
 const handler = handle(hono);
 
