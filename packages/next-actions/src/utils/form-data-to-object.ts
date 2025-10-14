@@ -1,8 +1,11 @@
+export const isFile = (value: any) => Object.prototype.toString.call(value) === '[object File]';
+
 export function formDataToObject(formData: FormData) {
   const computeObject = (data: any, parts: string[], value: any): any => {
     const field = parts.shift() as string;
     if (parts.length === 0) {
-      return { [field]: value };
+      const valueData = isFile(value) ? value : JSON.parse(value);
+      return { [field]: valueData };
     }
     const currentData = data[field] || {};
     const newValue = computeObject(currentData, parts, value);
@@ -11,16 +14,10 @@ export function formDataToObject(formData: FormData) {
     };
   };
   return Object.entries(Object.fromEntries(formData.entries())).reduce(
-    (acc, [key]) => {
-      const value = key.endsWith("[]")
-        ? formData.getAll(key)
-        : formData.get(key);
-      key = key.replace("[]", "");
-      return {
-        ...acc,
-        ...computeObject(acc, key.split("."), value),
-      };
-    },
-    {},
+    (acc, [key, value]) => ({
+      ...acc,
+      ...computeObject(acc, key.split('.'), value),
+    }),
+    {}
   );
 }
