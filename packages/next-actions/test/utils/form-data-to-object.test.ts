@@ -8,20 +8,20 @@ describe("Example Test Suite", () => {
 
   it("complex objects", () => {
     const formData = new FormData();
-    formData.append("name", "John Doe");
-    formData.append("age", "30");
-    formData.append("city", "New York");
+    formData.append("name", JSON.stringify("John Doe"));
+    formData.append("age", JSON.stringify(30));
+    formData.append("city", JSON.stringify("New York"));
     //Add nested objects
-    formData.append("address.city", "New York");
-    formData.append("address.zip", "10001");
+    formData.append("address.city", JSON.stringify("New York"));
+    formData.append("address.zip", JSON.stringify("10001"));
     //Add array
-    formData.append("hobbies[]", "reading");
-    formData.append("hobbies[]", "traveling");
+    formData.append("hobbies[]", JSON.stringify("reading"));
+    formData.append("hobbies[]", JSON.stringify("traveling"));
 
     const data = formDataToObject(formData);
     expect(data).toStrictEqual({
       name: "John Doe",
-      age: "30",
+      age: 30,
       city: "New York",
       address: {
         city: "New York",

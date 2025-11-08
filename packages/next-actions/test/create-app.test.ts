@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { createApp } from "../src/create-app";
-import { z, ZodError } from "zod";
+import { Context, createApp } from "../src/create-app";
+import { z } from "zod";
 import {
   HeaderContext,
   headers,
@@ -43,7 +43,7 @@ describe("createApp", () => {
       ValidateConfig<typeof schema>
     >();
     app.use(validate);
-    const action = app(
+    const action = app<any>(
       { schema },
       async ({ input: { name } }) => name + " world",
     );
@@ -58,20 +58,24 @@ describe("createApp", () => {
       ValidateConfig<typeof schema>
     >();
     app.use(validate);
-    const action = app(
+    const action = app<any>(
       { schema },
       async ({ input: { name } }) => name + " world",
     );
-    try {
-      await action({ name: 5 });
-      expect(false).toBe(true);
-    } catch (error) {
-      expect(error).toBeInstanceOf(ZodError);
-    }
+    const result = await action({ name: 5 });
+    expect(JSON.parse(result)).toEqual([
+      {
+        code: "invalid_type",
+        expected: "string",
+        received: "number",
+        path: ["name"],
+        message: "Expected string, received number",
+      },
+    ]);
   });
 
   it("Headers", async () => {
-    const app = createApp<HeaderContext>();
+    const app = createApp<Context & HeaderContext>();
     app.use(headers);
     const action = app(async ({ headers }) => headers.get("x-header"));
     const result = await action();
@@ -97,15 +101,15 @@ describe("createApp", () => {
 
   it("FormData", async () => {
     const formData = new FormData();
-    formData.append("name", "John");
-    formData.append("lastName", "Doe");
+    formData.append("name", JSON.stringify("John"));
+    formData.append("lastName", JSON.stringify("Doe"));
     const schema = z.object({ name: z.string(), lastName: z.string() });
     const app = createApp<
       { input: z.infer<typeof schema> },
       ValidateConfig<typeof schema>
     >();
     app.use(validate);
-    const action = app(
+    const action = app<any>(
       { schema },
       async ({ input: { name, lastName } }) => name + " " + lastName,
     );

@@ -63,15 +63,17 @@ export function createApp<T extends Context, C = any>() {
       } as CurrentContext;
       const middleware = [
         ...wrapper._middleware,
-        (ctx: CurrentContext) =>
-          actions.reduce(async (acc, action) => {
+        async (ctx: CurrentContext) => {
+          const result = await actions.reduce(async (acc, action) => {
             const ctx = await acc;
             const input = await action(ctx, config);
             return {
               ...ctx,
               input,
             };
-          }, Promise.resolve(ctx)),
+          }, Promise.resolve(ctx));
+          return result.input;
+        },
       ];
       const result = (await middlewareRunner(
         ctx,
@@ -80,7 +82,7 @@ export function createApp<T extends Context, C = any>() {
         middleware as Middleware<CurrentContext, C>[],
         0,
       )) as CurrentContext;
-      return result.input;
+      return result;
     };
   }
 
