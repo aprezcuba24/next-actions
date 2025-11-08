@@ -167,8 +167,8 @@ importers:
   packages/next-actions:
     dependencies:
       zod:
-        specifier: ^3.24.1
-        version: 3.25.76
+        specifier: '>=3.24.1'
+        version: 4.0.15
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -177,28 +177,28 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
-        specifier: ^20.*
-        version: 20.19.9
+        specifier: '>=20.0.0'
+        version: 22.17.0
       '@types/react':
-        specifier: ^19.*
+        specifier: '>=18.0.0'
         version: 19.1.0
       '@types/react-dom':
-        specifier: ^19.*
+        specifier: '>=18.0.0'
         version: 19.1.1(@types/react@19.1.0)
       hono:
-        specifier: ^4.*
+        specifier: '>=4.9.9'
         version: 4.9.9
       next:
-        specifier: ^15.*
+        specifier: '>=15.4.5'
         version: 15.4.6(@babel/core@7.28.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
-        specifier: ^19.*
+        specifier: '>=19.1.0'
         version: 19.1.1
       react-dom:
-        specifier: ^19.*
+        specifier: '>=19.1.0'
         version: 19.1.1(react@19.1.1)
       typescript:
-        specifier: ^5.*
+        specifier: '>=5.0.0'
         version: 5.8.3
 
   packages/typescript-config: {}
@@ -933,9 +933,6 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/node@20.19.9':
-    resolution: {integrity: sha512-cuVNgarYWZqxRJDQHEB58GEONhOK79QVR/qYx4S7kcUObQvUwvFnYxJuuHUKm2aieN9X3yZB4LZsuYNU1Qphsw==}
 
   '@types/node@22.17.0':
     resolution: {integrity: sha512-bbAKTCqX5aNVryi7qXVMi+OkB3w/OyblodicMbvE38blyAz7GxXf6XYhklokijuPwwVg9sDLKRxt0ZHXQwZVfQ==}
@@ -2592,9 +2589,6 @@ packages:
     resolution: {integrity: sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==}
     engines: {node: '>=12.20'}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
-
   zod@4.0.15:
     resolution: {integrity: sha512-2IVHb9h4Mt6+UXkyMs0XbfICUh1eUrlJJAOupBHUhLRnKkruawyDddYRCs0Eizt900ntIMk9/4RksYl+FgSpcQ==}
 
@@ -3167,10 +3161,6 @@ snapshots:
   '@types/estree@1.0.8': {}
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/node@20.19.9':
-    dependencies:
-      undici-types: 6.21.0
 
   '@types/node@22.17.0':
     dependencies:
@@ -5189,7 +5179,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yocto-queue@1.2.1: {}
-
-  zod@3.25.76: {}
 
   zod@4.0.15: {}
