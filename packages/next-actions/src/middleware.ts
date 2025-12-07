@@ -36,7 +36,9 @@ export const validate = async <C extends Context>(
     error: undefined,
   };
   if (!success) {
-    return error?.issues ?? [];
+    return {
+      errors: error?.issues ?? [],
+    };
   }
   return next({
     ...ctx,
